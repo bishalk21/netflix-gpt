@@ -53,6 +53,8 @@ Backend: Firebase Authentication, OpenAI API
 - install Tailwind CSS and configure it with Vite.js
 - set up React Router for routing
 - create form components for user authentication (sign-up and login)
+- form validation for authentication forms
+- useRef for form handling
 
 ## Notes
 
@@ -61,6 +63,8 @@ Backend: Firebase Authentication, OpenAI API
 - [Vite.js](#vitejs)
 - [Tailwind CSS](#tailwind-css)
 - [Routing with React Router](#routing-with-react-router)
+- [Regex for form validation](#regex-for-form-validation)
+- [useRef for form handling (uncontrolled components)](#useref-for-form-handling-uncontrolled-components)
 
 ### Vite.js
 
@@ -109,5 +113,20 @@ Backend: Firebase Authentication, OpenAI API
   `npm install react-router-dom`
 
 - React Router is used for client-side routing, allowing for a seamless navigation experience without full page reloads. It provides a declarative way to define routes and manage navigation within the application.
+- `createBrowserRouter` is used to define the application's routes, and `RouterProvider` is used to provide the routing context to the application. This setup allows for easy navigation between different pages, such as the login page, home page, and movie details page.
+
+### Regex for form validation
+
+- Regular expressions (regex) are used for form validation to ensure that user input meets specific criteria. For example, regex can be used to validate email addresses, passwords, and other form fields. This helps improve the user experience by providing immediate feedback on invalid input and preventing form submission until the input is valid.
+
+### useRef for form handling (uncontrolled components)
+
+- https://react.dev/reference/react/useRef
+- We can manage the input values in react either by using state or by using refs.
+- If useState is used, then input field is controlled component and every time the user types something in the input field, the component will re-render, which can lead to performance issues if there are many input fields or if the component is complex.
+- If useRef is used, then it creates reference to the input field and we can access the current value of the input field without causing a re-render. This can improve performance, especially in cases where there are many input fields or when the component is complex.
+- The `useRef` hook is a powerful tool for managing mutable values that persist across renders without causing re-renders when they change. In the context of form handling, `useRef` can be used to create references to form elements, allowing us to access their current values directly from the DOM. This is particularly useful for handling uncontrolled components, where the form data is not managed by React state but instead accessed directly from the DOM elements. By using `useRef`, we can efficiently manage form inputs and handle form submissions without unnecessary re-renders, improving performance and user experience.
+- use useState when UI depends on the input value, need live validation, or want to reset the input value after submission or need reactive updates based on input changes.
+- use useRef when you want to access the current value of an input field without causing re-renders, or when you want to manage focus or other DOM-related tasks.
 
 Firebase Authentication is implemented for user management, and the OpenAI API is integrated to enable GPT functionality within the application.

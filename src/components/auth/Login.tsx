@@ -1,10 +1,38 @@
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "../header/Header";
+import { validateUserInputs } from "@/utils/userFormValidation";
 
 const LoginSignup = () => {
+  // either we can create state for each input field and make them controlled components
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
   const [isSignUp, setIsSignUp] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // we can use useRef to create reference to the input fields and
+  // access their values directly from the DOM.
+  // This way we can avoid unnecessary re-renders and improve performance.
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
+  };
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // validate form data
+    const message = validateUserInputs(
+      nameRef.current?.value ?? "",
+      emailRef.current?.value ?? "",
+      passwordRef.current?.value ?? "",
+    );
+    if (message) {
+      setErrorMessage(message);
+    } else {
+      setErrorMessage("");
+    }
+    // handle authentication logic here
   };
   return (
     <div className="netflix-login relative h-screen w-full">
@@ -20,7 +48,10 @@ const LoginSignup = () => {
             <h2 className="text-2xl font-bold mb-4">
               {isSignUp ? "Create an account" : "Login to your account"}
             </h2>
-            <form className="w-full mx-auto flex flex-col space-y-4">
+            <form
+              className="w-full mx-auto flex flex-col space-y-4"
+              onSubmit={handleFormSubmit}
+            >
               {isSignUp && (
                 <input
                   type="text"
@@ -29,6 +60,9 @@ const LoginSignup = () => {
                   autoComplete="name"
                   id="name"
                   name="name"
+                  ref={nameRef}
+                  // value={name}
+                  // onChange={(e) => setName(e.target.value)}
                 />
               )}{" "}
               <input
@@ -38,6 +72,9 @@ const LoginSignup = () => {
                 autoComplete="email"
                 id="email"
                 name="email"
+                ref={emailRef}
+                // value={email}
+                // onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
@@ -46,7 +83,13 @@ const LoginSignup = () => {
                 autoComplete="current-password"
                 id="password"
                 name="password"
+                ref={passwordRef}
+                // value={password}
+                // onChange={(e) => setPassword(e.target.value)}
               />
+              {errorMessage && (
+                <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+              )}
               <button
                 type="submit"
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md mt-4 transition-colors duration-300"

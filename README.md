@@ -3,6 +3,7 @@
 ## Tech Stack:
 
 Frontend: TypeScript, React.js, Vite.js, Tailwind CSS
+Routing: React Router, React Router DOM
 Build Tool: Vite.js (Rollup under the hood for production builds)
 Backend: Firebase Authentication, OpenAI API
 
@@ -10,6 +11,7 @@ Backend: Firebase Authentication, OpenAI API
 
 - Authentication with Firebase
 - Form Handling
+- Routing with React Router
 - GPT Integration (OpenAI API)
 
 1. Authentication with Firebase: Users can sign up and log in using their email and password. Firebase Authentication provides a secure and easy way to manage user authentication. Protected routes ensure that only authenticated users can access certain parts of the application.
@@ -49,12 +51,16 @@ Backend: Firebase Authentication, OpenAI API
 
 - create project using vite.js with React and TypeScript template
 - install Tailwind CSS and configure it with Vite.js
+- set up React Router for routing
+- create form components for user authentication (sign-up and login)
 
 ## Notes
 
 ### Table of Contents
 
 - [Vite.js](#vitejs)
+- [Tailwind CSS](#tailwind-css)
+- [Routing with React Router](#routing-with-react-router)
 
 ### Vite.js
 
@@ -95,5 +101,13 @@ Backend: Firebase Authentication, OpenAI API
 - used for styling, offering a utility-first approach to design.
 
 [Back to top](#Table-of-Contents)
+
+### Routing with React Router
+
+- https://reactrouter.com/en/main
+
+  `npm install react-router-dom`
+
+- React Router is used for client-side routing, allowing for a seamless navigation experience without full page reloads. It provides a declarative way to define routes and manage navigation within the application.
 
 Firebase Authentication is implemented for user management, and the OpenAI API is integrated to enable GPT functionality within the application.

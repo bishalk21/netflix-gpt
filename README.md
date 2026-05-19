@@ -2,7 +2,7 @@
 
 ## Tech Stack:
 
-Frontend: TypeScript, React.js, Vite.js, Tailwind CSS
+Frontend: TypeScript, React.js, Vite.js, Tailwind CSS, Shadcn UI
 Routing: React Router, React Router DOM
 Build Tool: Vite.js (Rollup under the hood for production builds)
 Backend: Firebase Authentication, OpenAI API
@@ -21,8 +21,8 @@ Backend: Firebase Authentication, OpenAI API
 ## Application Structure:
 
 - User Authentication:
-  - Sign-up and login forms
-  - Firebase Authentication integration
+  - Sign-up and login forms ✔️
+  - Firebase Authentication integration ✔️
   - Protected routes for authenticated users
   - redirect to login page if user is not authenticated
   - redirect to home page after successful login
@@ -54,7 +54,9 @@ Backend: Firebase Authentication, OpenAI API
 - set up React Router for routing
 - create form components for user authentication (sign-up and login)
 - form validation for authentication forms
-- useRef for form handling
+- useRef for form handling (uncontrolled components) to improve performance
+- set up Firebase Authentication for user management
+- firebase hosting for development and production
 
 ## Notes
 
@@ -65,6 +67,7 @@ Backend: Firebase Authentication, OpenAI API
 - [Routing with React Router](#routing-with-react-router)
 - [Regex for form validation](#regex-for-form-validation)
 - [useRef for form handling (uncontrolled components)](#useref-for-form-handling-uncontrolled-components)
+- [Firebase Authentication](#firebase-authentication)
 
 ### Vite.js
 
@@ -118,6 +121,12 @@ Backend: Firebase Authentication, OpenAI API
 ### Regex for form validation
 
 - Regular expressions (regex) are used for form validation to ensure that user input meets specific criteria. For example, regex can be used to validate email addresses, passwords, and other form fields. This helps improve the user experience by providing immediate feedback on invalid input and preventing form submission until the input is valid.
+  ```
+  // Example regex for email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Example regex for password validation (at least 8 characters, one uppercase letter, one lowercase letter, and one number)
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+  ```
 
 ### useRef for form handling (uncontrolled components)
 
@@ -129,4 +138,69 @@ Backend: Firebase Authentication, OpenAI API
 - use useState when UI depends on the input value, need live validation, or want to reset the input value after submission or need reactive updates based on input changes.
 - use useRef when you want to access the current value of an input field without causing re-renders, or when you want to manage focus or other DOM-related tasks.
 
-Firebase Authentication is implemented for user management, and the OpenAI API is integrated to enable GPT functionality within the application.
+  ```
+  const nameRef = useRef<HTMLInputElement>(null);
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const name = nameRef.current?.value ?? "";
+    console.log(name);
+    // ref.current gives us access to the DOM element, and .value gives us the current value of the input field. The nullish coalescing operator (??) is used to provide a default value of an empty string if nameRef.current is null or undefined.
+    // handle authentication logic here
+  };
+
+  <input
+    type="text"
+    id="name"
+    name="name"
+    ref={nameRef}
+  />
+  ```
+
+### Firebase Authentication
+
+> https://firebase.google.com/docs/auth/web/start
+
+Firebase Authentication is a service provided by Firebase that allows developers to easily add authentication and user management features to their applications. It supports various authentication methods, including email/password, phone number, and third-party providers like Google, Facebook, and Twitter. Firebase Authentication provides a secure and scalable way to manage user authentication and can be easily integrated with other Firebase services.
+
+- Setup Firebase Authentication in the project and create a new project in the Firebase console.
+- Add Google Analytics to the project for tracking user interactions and behavior within the application.
+- choose web as the platform and follow the instructions to register the app and add Firebase to the project.
+- set firebase hosting to localhost:5173 for development and deploy to Firebase Hosting for production. this will allow us to serve our React application from Firebase's hosting service, which provides fast and secure hosting for web applications. During development, we can use the local development server provided by Vite.js, and when we're ready to deploy, we can build the application and deploy it to Firebase Hosting for production use.
+- install Firebase SDK and set up authentication in the React application. This involves initializing Firebase in the project, creating authentication functions for signing up and logging in users, and protecting routes that require authentication.
+  ```
+  npm install firebase
+  ```
+- create a firebaseConfig.ts file to store the Firebase configuration and initialize Firebase in the project.
+- enable authentication methods in the Firebase console, such as email/password authentication, and configure the necessary settings for each method.
+  ```
+  > go to Authentication > Sign-in method in the Firebase console
+  > enable Email/Password authentication
+  > save changes
+  ```
+- can add additional authentication methods like Google, Facebook, etc. by enabling them in the Firebase console and following the setup instructions for each provider.
+- install Firebase CLI globally to manage Firebase projects and deploy the application to Firebase Hosting.
+  ```
+  npm install -g firebase-tools
+  ```
+- run `firebase login` to log in to your Firebase account and `firebase init` to initialize Firebase in your project. During the initialization process, select the features you want to use (e.g., Hosting, Authentication) and follow the prompts to set up your project.
+- to deploy the application to Firebase Hosting, run `firebase deploy`. This will build the application and upload it to Firebase Hosting, making it accessible to users via the provided URL.
+
+  ```
+  firebase login
+  // if problems with login, try firebase login --reauth
+  firebase init
+  // select Hosting and Authentication features
+  Setup deployment for static web apps
+  // select the project you created in the Firebase console
+  What do you want to use as your public directory? dist // this is the output directory for Vite.js builds and build if using create-react-app
+  Configure as a single-page app (rewrite all urls to /index.html)? no (since we are using React Router for routing)
+  Set up automatic builds and deploys with GitHub? no (optional, can set up later if needed)
+  Would you like to install agent skills for Firebase? no (optional, can set up later if needed) Yes (optional, can set up later if needed)
+
+  // before deploying, make sure to build the application for production using Vite.js
+  npm run build
+  ```
+
+- After initializing Firebase, you can run `firebase serve` to start a local development server that serves your application from Firebase Hosting. This allows you to test your application in an environment that closely resembles production.
+
+[Back to top](#Table-of-Contents)

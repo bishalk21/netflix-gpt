@@ -1,9 +1,9 @@
 export const validateUserInputs = (
-  name: string,
+  //   name: string,
   email: string,
   password: string,
 ) => {
-  const isNameValid = /^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/.test(name);
+  //   const isNameValid = /^[a-zA-Z]+(?:\s[a-zA-Z]+)+$/.test(name);
   const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
     email,
   );
@@ -11,9 +11,8 @@ export const validateUserInputs = (
   const isPasswordValid =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,16}$/.test(password);
 
-  if (!isNameValid) {
-    return "Please enter a valid full name.";
-  }
+  //   if (!isNameValid)  return "Please enter a valid full name.";
+
   if (!isEmailValid) {
     return "Please enter a valid email address.";
   }

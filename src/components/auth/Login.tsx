@@ -1,8 +1,20 @@
 import React, { useRef, useState } from "react";
 import Header from "../header/Header";
 import { validateUserInputs } from "@/utils/userFormValidation";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useNavigate } from "react-router";
+import { useAppDispatch } from "@/utils/hooks";
+import { addUser } from "@/reducer-actions/userSlice";
 
 const LoginSignup = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const auth = getAuth(); // Get the Firebase Auth instance
   // either we can create state for each input field and make them controlled components
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -23,16 +35,80 @@ const LoginSignup = () => {
     e.preventDefault();
     // validate form data
     const message = validateUserInputs(
-      nameRef.current?.value ?? "",
+      // nameRef.current?.value ?? "",
       emailRef.current?.value ?? "",
       passwordRef.current?.value ?? "",
     );
-    if (message) {
-      setErrorMessage(message);
-    } else {
-      setErrorMessage("");
-    }
+    setErrorMessage(message ?? ""); // Set error message if validation fails, otherwise clear it
+    if (message) return; // If there's a validation error, stop further processing
     // handle authentication logic here
+    if (isSignUp) {
+      // sign up logic
+      createUserWithEmailAndPassword(
+        auth,
+        emailRef.current?.value ?? "",
+        passwordRef.current?.value ?? "",
+      )
+        .then((userCredential) => {
+          // Signed up successfully
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: nameRef.current?.value ?? "",
+            photoURL: "https://example.com/default-profile-pic.png",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser!;
+              dispatch(
+                addUser({
+                  id: uid,
+                  email: email || "",
+                  name: displayName || "",
+                  photoURL: photoURL || "",
+                }),
+              );
+              // You can redirect the user to the browse page or show a success message here
+              // console.log("User signed up:", user);
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // Handle errors from updateProfile here
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              setErrorMessage(errorCode + ": " + errorMessage);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          if (errorCode === "auth/email-already-in-use") {
+            setErrorMessage(
+              "The email address is already in use by another account.",
+            );
+            return;
+          }
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + ": " + errorMessage);
+        });
+    } else {
+      // login logic
+      signInWithEmailAndPassword(
+        auth,
+        emailRef.current?.value ?? "",
+        passwordRef.current?.value ?? "",
+      )
+        .then(() => {
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+
+          if (errorCode === "auth/invalid-credential") {
+            setErrorMessage("The email address is not valid.");
+            return;
+          }
+          setErrorMessage(errorCode + ": " + errorMessage);
+        });
+    }
   };
   return (
     <div className="netflix-login relative h-screen w-full">

@@ -2,16 +2,22 @@
 
 ## Tech Stack:
 
-Frontend: TypeScript, React.js, Vite.js, Tailwind CSS, Shadcn UI
-Routing: React Router, React Router DOM
-Build Tool: Vite.js (Rollup under the hood for production builds)
-Backend: Firebase Authentication, OpenAI API
+- Frontend: TypeScript, React.js, Vite.js, Tailwind CSS, Shadcn UI
+- Routing: React Router, React Router DOM
+- State Management: React-Redux, Redux Toolkit (RTK)
+- Build Tool: Vite.js (Rollup under the hood for production builds)
+- Movie Data: TMDB API
+- Backend: Firebase Authentication, OpenAI API
 
 ### Features:
 
 - Authentication with Firebase
-- Form Handling
+- Form Handling with useRef (uncontrolled components)
+- Regex for form validation
 - Routing with React Router
+- Nullish Coalescing Operator (??) for handling default values
+- Firebase Hosting for development and production
+- Redux Toolkit for state management
 - GPT Integration (OpenAI API)
 
 1. Authentication with Firebase: Users can sign up and log in using their email and password. Firebase Authentication provides a secure and easy way to manage user authentication. Protected routes ensure that only authenticated users can access certain parts of the application.
@@ -21,8 +27,8 @@ Backend: Firebase Authentication, OpenAI API
 ## Application Structure:
 
 - User Authentication:
-  - Sign-up and login forms ✔️
-  - Firebase Authentication integration ✔️
+  - Sign-up and login forms
+  - Firebase Authentication integration
   - Protected routes for authenticated users
   - redirect to login page if user is not authenticated
   - redirect to home page after successful login
@@ -49,14 +55,23 @@ Backend: Firebase Authentication, OpenAI API
 
 ### Development Setup:
 
-- create project using vite.js with React and TypeScript template
-- install Tailwind CSS and configure it with Vite.js
-- set up React Router for routing
-- create form components for user authentication (sign-up and login)
-- form validation for authentication forms
-- useRef for form handling (uncontrolled components) to improve performance
-- set up Firebase Authentication for user management
-- firebase hosting for development and production
+- create project using vite.js with React and TypeScript template ✔️
+- install Tailwind CSS and configure it with Vite.js ✔️
+- set up React Router for routing ✔️
+- create form components for user authentication (sign-up and login) ✔️
+- form validation for authentication forms using regex ✔️
+- useRef for form handling (uncontrolled components) to improve performance ✔️
+- set up Firebase Authentication for user management ✔️
+- firebase hosting for development and production ✔️
+- set up Redux Toolkit for state management ✔️
+
+## Routes & API Endpoints:
+
+| Route     | Component | Description                                                   |
+| --------- | --------- | ------------------------------------------------------------- |
+| `/`       | `Login`   | if user is not authenticated, redirect to login page......... |
+| `/login`  | `Login`   | The login page for user authentication.                       |
+| `/signup` | `Signup`  | The sign-up page for new users to create an account.          |
 
 ## Notes
 
@@ -68,6 +83,8 @@ Backend: Firebase Authentication, OpenAI API
 - [Regex for form validation](#regex-for-form-validation)
 - [useRef for form handling (uncontrolled components)](#useref-for-form-handling-uncontrolled-components)
 - [Firebase Authentication](#firebase-authentication)
+- [Nullish Coalescing Operator (??)](#nullish-coalescing-operator)
+- [React-Redux and Redux Toolkit](#react-redux-and-redux-toolkit)
 
 ### Vite.js
 
@@ -121,12 +138,25 @@ Backend: Firebase Authentication, OpenAI API
 ### Regex for form validation
 
 - Regular expressions (regex) are used for form validation to ensure that user input meets specific criteria. For example, regex can be used to validate email addresses, passwords, and other form fields. This helps improve the user experience by providing immediate feedback on invalid input and preventing form submission until the input is valid.
+
   ```
   // Example regex for email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   // Example regex for password validation (at least 8 characters, one uppercase letter, one lowercase letter, and one number)
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
   ```
+
+- Different Form Handling Approaches:
+  - Controlled Components: In this approach, form data is managed by React state. Each input field is associated with a state variable, and the component re-renders every time the user types something in the input field. This allows for real-time validation and dynamic updates based on user input.
+  - Uncontrolled Components: In this approach, form data is managed by the DOM itself. Instead of using state to manage the input values, we can use refs to access the current value of the input fields when needed (e.g., on form submission). This can improve performance, especially in cases where there are many input fields or when the component is complex, as it avoids unnecessary re-renders.
+
+- When to use which approach:
+  - Use controlled components when the UI needs to react to input changes, such as live validation, dynamic form fields, or when you want to reset the input value after submission.
+  - Use uncontrolled components when you want to access the current value of an input field without causing re-renders, or when you want to manage focus or other DOM-related tasks.
+
+- In this project, we use `useRef` for form handling in the authentication forms to improve performance and avoid unnecessary re-renders while still allowing us to access the current values of the input fields when the user submits the form.
+
+- Libraries like Formik and React Hook Form can also be used for form handling in React applications. These libraries provide additional features and abstractions for managing form state, validation, and submission, making it easier to build complex forms with less boilerplate code.
 
 ### useRef for form handling (uncontrolled components)
 
@@ -159,6 +189,7 @@ Backend: Firebase Authentication, OpenAI API
 ### Firebase Authentication
 
 > https://firebase.google.com/docs/auth/web/start
+> https://firebase.google.com/docs/auth/web/password-auth#web
 
 Firebase Authentication is a service provided by Firebase that allows developers to easily add authentication and user management features to their applications. It supports various authentication methods, including email/password, phone number, and third-party providers like Google, Facebook, and Twitter. Firebase Authentication provides a secure and scalable way to manage user authentication and can be easily integrated with other Firebase services.
 
@@ -202,5 +233,139 @@ Firebase Authentication is a service provided by Firebase that allows developers
   ```
 
 - After initializing Firebase, you can run `firebase serve` to start a local development server that serves your application from Firebase Hosting. This allows you to test your application in an environment that closely resembles production.
+
+[Back to top](#Table-of-Contents)
+
+### Nullish Coalescing Operator (??)
+
+The nullish coalescing operator (??) is a logical operator that returns the right-hand side operand when the left-hand side operand is null or undefined, and otherwise returns the left-hand side operand. It is often used to provide default values for variables that may be null or undefined.
+
+```
+const value = someVariable ?? "default value";
+```
+
+### React-Redux and Redux Toolkit
+
+- https://react-redux.js.org/
+- https://redux-toolkit.js.org/introduction/getting-started
+- https://redux-toolkit.js.org/tutorials/typescript
+
+React-Redux is the official React binding for Redux, a predictable state container for JavaScript applications. It provides a way to connect React components to the Redux store, allowing components to access and update the application state.
+Redux Toolkit is a set of tools and utilities that simplify the process of writing Redux logic. It provides a standardized way to write Redux code, including actions, reducers, and store configuration. Redux Toolkit includes features like createSlice for creating reducers and actions in a single step, configureStore for setting up the Redux store with good defaults, and createAsyncThunk for handling asynchronous logic in Redux.
+
+- Set up React-Redux and Redux Toolkit in the project to manage application state, such as user authentication status and movie data. This involves creating a Redux store, defining slices for different parts of the state, and connecting React components to the Redux store using the `useSelector` and `useDispatch` hooks provided by React-Redux.
+  - Install the necessary dependencies for React-Redux and Redux Toolkit:
+    ```
+    npm install react-redux @reduxjs/toolkit
+    // if using TypeScript, also install the type definitions for React-Redux
+    npm install @types/react-redux
+    ```
+  - Create a Redux store using `configureStore` from Redux Toolkit to manage the application state. This store will hold the state for user authentication, movie data, and any other relevant information.
+
+  ```js
+  import { configureStore } from "@reduxjs/toolkit";
+
+  const store = configureStore({
+    reducer: {
+      // add your reducers here
+    },
+  });
+  // root state means the entire state of the Redux store, which is the combination of all the individual slices of state managed by different reducers. By using ReturnType<typeof store.getState>, we can infer the type of the root state based on the structure of the reducers we have defined in our store configuration. This allows us to have type safety when accessing the state in our React components, ensuring that we are accessing the correct properties and types from the Redux store.
+  export type RootState = ReturnType<typeof store.getState>; // Type for the root state of the Redux store
+  // AppDispatch is the type for the dispatch function of the Redux store, which is used to dispatch actions to update the state. By using typeof store.dispatch, we can infer the type of the dispatch function based on the configuration of our Redux store. This allows us to have type safety when dispatching actions in our React components, ensuring that we are dispatching the correct actions with the correct payloads.
+  export type AppDispatch = typeof store.dispatch; // Type for the dispatch function of the Redux store
+  export default store;
+  ```
+
+  - Create a `hooks.ts` file to define typed versions of the `useDispatch` and `useSelector` hooks for use throughout the application. This ensures type safety when dispatching actions and selecting state from the Redux store in React components.
+
+  ```js
+  import { useDispatch, useSelector } from "react-redux";
+  import type { AppDispatch, RootState } from "./store";
+  export const useAppDispatch = useDispatch.withTypes<AppDispatch>();
+  export const useAppSelector = useSelector.withTypes<RootState>();
+  ```
+
+  - Define slices of state using `createSlice` from Redux Toolkit to manage specific parts of the application state, such as user authentication and movie data. Each slice will include its own reducer logic and actions for updating that slice of state.
+
+  ```js
+  import { createSlice } from "@reduxjs/toolkit";
+  import type { PayloadAction } from "@reduxjs/toolkit";
+
+  const userSlice = createSlice({
+    name: "user",
+    initialState: {
+        user: null,
+    },
+    reducers: {
+        addUser: (state, action: PayloadAction<any>) => {
+            state.user = action.payload; // Update the user state with the payload from the dispatched action
+        },
+        removeUser: (state) => {
+            state.user = null; // Clear the user state when removing the user
+        },
+      },
+    });
+
+    export const {addUser, removeUser} = userSlice.actions; // Export the generated action creators for use in components
+    export default userSlice.reducer; // Export the generated reducer function for use in the Redux store
+  ```
+
+  - Add the reducers from the slices to the Redux store configuration to combine them into a single root reducer.
+
+  ```js
+  import { configureStore } from "@reduxjs/toolkit";
+  import userReducer from "./reducer-actions/userSlice"; // Import the user slice reducer
+
+  const store = configureStore({
+    reducer: {
+      user: userReducer, // Add the user slice reducer to the root reducer
+    },
+  });
+
+  export default store;
+  ```
+
+  - Provide the Redux store to the React application using the `Provider` component from React-Redux. This allows any component in the application to access the Redux store and dispatch actions.
+
+  ```js
+  import { Provider } from "react-redux";
+  import store from "./utils/store"; // Import the configured Redux store
+  function App() {
+    return (
+      <Provider store={store}>
+        {/* Your application components go here */}
+      </Provider>
+    );
+  }
+  ```
+
+  - Connect React components to the Redux store using the `useSelector` hook to access state and the `useDispatch` hook to dispatch actions. This allows components to read data from the Redux store and update the state in response to user interactions or other events.
+
+  ```js
+  import { useAppSelector, useAppDispatch } from "../utils/hooks";
+  import { addUser, removeUser } from "../reducer-actions/userSlice";
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user.user); // Access the user state from the Redux store
+  // To update the user state, you can dispatch the addUser
+  dispatch(addUser({ name: "John Doe", email: "john.doe@example.com" }));
+  ```
+
+  - Adding user after successful login and removing user after logout to manage authentication state across the application.
+
+  ```js
+  import { useAppSelector, useAppDispatch } from "../utils/hooks";
+  import { addUser, removeUser } from "../reducer-actions/userSlice";
+  const dispatch = useAppDispatch();
+  const handleButtonClick = () => {
+    // validate user
+    const res = validateUser(email, password);
+    if (res.success) {
+      dispatch(addUser(res.user)); // Add user to the Redux store after successful login
+    } else {
+      dispatch(removeUser()); // Remove user from the Redux store on logout or failed login
+    }
+  };
+  ```
 
 [Back to top](#Table-of-Contents)

@@ -64,14 +64,16 @@
 - set up Firebase Authentication for user management ✔️
 - firebase hosting for development and production ✔️
 - set up Redux Toolkit for state management ✔️
+- route protection with React Router to restrict access to certain routes based on authentication status ✔️
 
 ## Routes & API Endpoints:
 
-| Route     | Component | Description                                                   |
-| --------- | --------- | ------------------------------------------------------------- |
-| `/`       | `Login`   | if user is not authenticated, redirect to login page......... |
-| `/login`  | `Login`   | The login page for user authentication.                       |
-| `/signup` | `Signup`  | The sign-up page for new users to create an account.          |
+| Route     | Component | Description                                                                 |
+| --------- | --------- | --------------------------------------------------------------------------- |
+| `/`       | `Login`   | if user is not authenticated, redirect to login page.........               |
+| `/login`  | `Login`   | The login page for user authentication.                                     |
+| `/signup` | `Signup`  | The sign-up page for new users to create an account.                        |
+| `/browse` | `Browse`  | The main page, displays movie categories and allows users to browse movies. |
 
 ## Notes
 
@@ -369,3 +371,13 @@ Redux Toolkit is a set of tools and utilities that simplify the process of writi
   ```
 
 [Back to top](#Table-of-Contents)
+
+### Protected Routes with React Router
+
+- when user is not authenticated, redirect to login page
+- when user is authenticated, allow access to protected routes (e.g., browse page)
+- after successful login or signup & once user is redirected to browse page, if user hits / or /login or /signup, redirect to browse page since user is already authenticated
+
+### Best Practices
+
+- Unsubscribing listeners in useEffect cleanup to prevent memory leaks and unintended side effects when components unmount or dependencies change.

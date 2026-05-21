@@ -5,8 +5,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // Extend as needed to match your actual user shape.
 export interface User {
   id?: string;
-  name?: string;
-  email?: string;
+  name?: string | null;
+  email?: string | null;
 
   // allow additional properties while keeping types safe
   [key: string]: unknown;

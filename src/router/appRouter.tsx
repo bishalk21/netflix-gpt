@@ -8,6 +8,14 @@ export const appRouter = createBrowserRouter([
     element: <LoginSignup />,
   },
   {
+    path: "/login",
+    element: <LoginSignup />,
+  },
+  {
+    path: "/signup",
+    element: <LoginSignup />,
+  },
+  {
     path: "/browse",
     element: <Browse />,
   },

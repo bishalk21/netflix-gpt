@@ -7,12 +7,10 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router";
 import { useAppDispatch } from "@/utils/hooks";
 import { addUser } from "@/reducer-actions/userSlice";
 
 const LoginSignup = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const auth = getAuth(); // Get the Firebase Auth instance
   // either we can create state for each input field and make them controlled components
@@ -68,7 +66,10 @@ const LoginSignup = () => {
               );
               // You can redirect the user to the browse page or show a success message here
               // console.log("User signed up:", user);
-              navigate("/browse");
+              // navigate("/browse");
+              // no need to navigate here since
+              // onAuthStateChanged listener in Header component will
+              // automatically redirect to browse page after successful signup or login
             })
             .catch((error) => {
               // Handle errors from updateProfile here
@@ -96,7 +97,10 @@ const LoginSignup = () => {
         passwordRef.current?.value ?? "",
       )
         .then(() => {
-          navigate("/browse");
+          // navigate("/browse");
+          // no need to navigate here since
+          // onAuthStateChanged listener in Header component will
+          // automatically redirect to browse page after successful signup or login
         })
         .catch((error) => {
           const errorCode = error.code;

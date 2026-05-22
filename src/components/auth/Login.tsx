@@ -3,16 +3,16 @@ import Header from "../header/Header";
 import { validateUserInputs } from "@/utils/userFormValidation";
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
 import { useAppDispatch } from "@/utils/hooks";
 import { addUser } from "@/reducer-actions/userSlice";
+import { auth } from "@/config/firebaseConfig";
+import { USER_PHOTO_URL } from "@/utils/constants";
 
 const LoginSignup = () => {
   const dispatch = useAppDispatch();
-  const auth = getAuth(); // Get the Firebase Auth instance
   // either we can create state for each input field and make them controlled components
   // const [email, setEmail] = useState("");
   // const [password, setPassword] = useState("");
@@ -52,7 +52,7 @@ const LoginSignup = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: nameRef.current?.value ?? "",
-            photoURL: "https://example.com/default-profile-pic.png",
+            photoURL: USER_PHOTO_URL,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser!;

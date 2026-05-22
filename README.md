@@ -1,4 +1,6 @@
-# Netflix GPT
+# [Netflix GPT](https://netflixgpt-a5323.web.app)
+
+Netflix GPT is a movie recommendation application that integrates with the OpenAI API to provide intelligent movie recommendations based on user queries. The application allows users to browse movies, view details, and receive personalized recommendations using GPT.
 
 ## Tech Stack:
 
@@ -65,6 +67,7 @@
 - firebase hosting for development and production ✔️
 - set up Redux Toolkit for state management ✔️
 - route protection with React Router to restrict access to certain routes based on authentication status ✔️
+- integrate with TMDB API to fetch movie data ✔️
 
 ## Routes & API Endpoints:
 
@@ -87,6 +90,10 @@
 - [Firebase Authentication](#firebase-authentication)
 - [Nullish Coalescing Operator (??)](#nullish-coalescing-operator)
 - [React-Redux and Redux Toolkit](#react-redux-and-redux-toolkit)
+- [Protected Routes with React Router](#protected-routes-with-react-router)
+- [TMDB API](#tmdb-api)
+- [React.StrictMode](#reactstrictmode)
+- [Best Practices](#best-practices)
 
 ### Vite.js
 
@@ -378,6 +385,114 @@ Redux Toolkit is a set of tools and utilities that simplify the process of writi
 - when user is authenticated, allow access to protected routes (e.g., browse page)
 - after successful login or signup & once user is redirected to browse page, if user hits / or /login or /signup, redirect to browse page since user is already authenticated
 
+### TMDB API
+
+- https://developer.themoviedb.org/reference/movie-now-playing-list
+- The Movie Database (TMDB) API is a popular API that provides access to a vast collection of movie and TV show data, including details about movies, TV shows, actors, genres, and more. It is commonly used in applications that require movie-related data, such as movie recommendation systems, movie browsing applications, and entertainment websites.
+- To use the TMDB API, you need to sign up for an account on the TMDB website and obtain an API key. Once you have the API key, you can make HTTP requests to the TMDB API endpoints to retrieve movie data and display it in your application.
+- Setup:
+  - Sign up or login for IMDB account > go to settings > API > request an API key
+  - Use the API key to make requests to the TMDB API endpoints to fetch movie data
+  - Example API endpoint to fetch popular movies: `https://api.themoviedb.org/3/movie/popular?api_key=YOUR_API_KEY`
+- Integration: fetch now playing movies:
+  - setup config file (e.g., `config.ts`) to store the TMDB API key and base URL for making API requests. This allows for easy management of API credentials and endpoints in one place.
+    ```js
+    export const API_OPTIONS = {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        Authorization: "Bearer YOUR_API_KEY",
+      },
+    ```
+  - create a service file (e.g., `tmdbService.ts`) to handle API requests to the TMDB API. This file will include functions for fetching movie data, such as popular movies, movie details, and search results.
+
+    ```js
+    import { API_OPTIONS } from "@/config/config";
+
+    const BASE_URL = "https://api.themoviedb.org/3";
+
+    export const fetchPopularMovies = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/movie/popular`, API_OPTIONS);
+        const data = await response.json();
+        return data.results; // Return the list of popular movies
+      } catch (error) {
+        console.error("Error fetching popular movies:", error);
+        throw error; // Rethrow the error to be handled by the caller
+      }
+    };
+    ```
+
+  - Use the functions from the service file in your React components to fetch and display movie data in the UI. For example, you can fetch popular movies and display them in a list or grid on the browse page, and fetch movie details when a user clicks on a movie item to display more information about the selected movie.
+
+        ```js
+        import { useEffect, useState } from "react";
+        import { fetchPopularMovies } from "@/services/tmdbService";
+
+        const Browse = () => {
+          const [movies, setMovies] = useState([]);
+
+          useEffect(() => {
+            const getPopularMovies = async () => {
+              try {
+                const popularMovies = await fetchPopularMovies();
+                setMovies(popularMovies); // Update state with the fetched popular movies
+              } catch (error) {
+                console.error("Error fetching popular movies:", error);
+              }
+            };
+
+            getPopularMovies(); // Fetch popular movies when the component mounts
+          }, []);
+
+          return (
+            <div>
+              <h1>Popular Movies</h1>
+              <ul>
+                {movies.map((movie) => (
+                  <li key={movie.id}>{movie.title}</li> // Display movie titles in a list
+                ))}
+              </ul>
+            </div>
+          );
+        };
+        ```
+
+    [Back to top](#Table-of-Contents)
+
+### React.StrictMode
+
+- https://react.dev/learn/react-strict-mode
+- https://react.dev/reference/react/StrictMode
+- React.StrictMode is a tool for highlighting potential problems in an application. It activates additional checks and warnings for its descendants. Strict mode checks are run in development mode only; they do not impact the production build. Strict mode currently helps with:
+  - Identifying components with unsafe lifecycles
+  - Warning about legacy string ref API usage
+  - Warning about deprecated findDOMNode usage
+  - Detecting unexpected side effects
+  - Detecting legacy context API
+- In this project, we wrap the application in `<React.StrictMode>` to enable these additional checks and warnings during development, helping us identify and fix potential issues in our React components and codebase.
+  In development mode, React.StrictMode will run additional checks and warnings to help identify potential issues in the application. For example, it may warn about deprecated lifecycle methods, unsafe ref usage, or unexpected side effects in components. These warnings can help developers catch and fix issues early in the development process, improving the overall quality and stability of the application. In development mode, React.StrictMode will also run certain functions and effects twice to help identify potential issues with side effects and ensure that components are resilient to being mounted and unmounted multiple times.
+  But in production mode, React.StrictMode does not have any impact on the application and does not run any additional checks or warnings. It is purely a development tool to help identify potential issues during the development process.
+
 ### Best Practices
 
-- Unsubscribing listeners in useEffect cleanup to prevent memory leaks and unintended side effects when components unmount or dependencies change.
+1.  Unsubscribing listeners in useEffect cleanup to prevent memory leaks and unintended side effects when components unmount or dependencies change.
+
+```js
+useEffect(() => {
+  const unsubscribe = someListener.subscribe(() => {
+    // handle listener events here
+  });
+  // Clean up the listener when the component unmounts or dependencies change
+  return () => unsubscribe();
+}, []);
+```
+
+2. Add hardcoded data or constants to a separate file (e.g., `constants.ts`) to keep the code organized and maintainable. This allows for easier management of static data and makes it easier to update values in one place without having to search through the entire codebase.
+
+```js
+// src/utils/constants.ts
+export const USER_PHOTO_URL = "https://unsplash.com/default-profile-pic.png"; // default profile picture URL for users who don't have one set
+```
+
+[Back to top](#Table-of-Contents)

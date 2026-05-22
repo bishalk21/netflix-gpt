@@ -36,7 +36,7 @@ const Header = () => {
   // so we can use useEffect with an empty dependency array to set up the listener.
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email, displayName } = user;
         dispatch(addUser({ id: uid, email: email, name: displayName }));
@@ -55,11 +55,8 @@ const Header = () => {
     // which can lead to memory leaks and unexpected behavior.
     // to prevent this, we can return a cleanup function from useEffect that
     // unsubscribes the listener when the component unmounts.
-    return () => {
-      // Unsubscribe the onAuthStateChanged listener when Header comp unloads.
-      const unsubscribe = onAuthStateChanged(auth, () => {});
-      unsubscribe();
-    };
+    // Unsubscribe the onAuthStateChanged listener when Header comp unloads.
+    return () => unsubscribe();
   }, []);
 
   return (

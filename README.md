@@ -93,6 +93,7 @@ Netflix GPT is a movie recommendation application that integrates with the OpenA
 - [Protected Routes with React Router](#protected-routes-with-react-router)
 - [TMDB API](#tmdb-api)
 - [React.StrictMode](#reactstrictmode)
+- [Custom Hooks](#custom-hooks)
 - [Best Practices](#best-practices)
 
 ### Vite.js
@@ -474,6 +475,16 @@ Redux Toolkit is a set of tools and utilities that simplify the process of writi
   In development mode, React.StrictMode will run additional checks and warnings to help identify potential issues in the application. For example, it may warn about deprecated lifecycle methods, unsafe ref usage, or unexpected side effects in components. These warnings can help developers catch and fix issues early in the development process, improving the overall quality and stability of the application. In development mode, React.StrictMode will also run certain functions and effects twice to help identify potential issues with side effects and ensure that components are resilient to being mounted and unmounted multiple times.
   But in production mode, React.StrictMode does not have any impact on the application and does not run any additional checks or warnings. It is purely a development tool to help identify potential issues during the development process.
 
+### Custom Hooks
+
+- Custom hooks are a powerful feature in React that allow you to extract and reuse logic across multiple components. They are JavaScript functions that start with the prefix "use" and can call other hooks (e.g., useState, useEffect) to manage state and side effects. Custom hooks can help you keep your code organized and DRY (Don't Repeat Yourself) by encapsulating common logic that can be shared across different components.
+  - keeps components clean and focused on rendering UI, while the custom hook handles the logic and state management.
+  - can be used to abstract away complex logic, such as data fetching, form handling, or authentication, making it easier to manage and test that logic in a single place.
+  - can improve readability by giving a descriptive name to the logic being encapsulated, making it clear what the hook does and how it should be used in the components that consume it.
+  - promotes DRY (Don't Repeat Yourself) principles by allowing you to reuse logic across multiple components without duplicating code, which can lead to cleaner and more maintainable codebases.
+  - can be easily tested in isolation, as they are just JavaScript functions that can be imported and tested without needing to render a component.
+  - better separation of concerns by keeping the logic and state management separate from the UI rendering, making it easier to reason about and maintain the codebase.
+
 ### Best Practices
 
 1.  Unsubscribing listeners in useEffect cleanup to prevent memory leaks and unintended side effects when components unmount or dependencies change.
@@ -494,5 +505,16 @@ useEffect(() => {
 // src/utils/constants.ts
 export const USER_PHOTO_URL = "https://unsplash.com/default-profile-pic.png"; // default profile picture URL for users who don't have one set
 ```
+
+3. Use environment variables to store sensitive information like API keys, and access them in the code using `process.env`. This helps keep sensitive data secure and allows for different configurations in development and production environments.
+
+```js
+// .env file
+REACT_APP_TMDB_API_KEY = your_tmdb_api_key_here;
+// Accessing the environment variable in the code
+const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+```
+
+4. Use TypeScript for type safety and better developer experience, especially when working with complex data structures and APIs. This can help catch errors early in the development process and improve code readability.
 
 [Back to top](#Table-of-Contents)

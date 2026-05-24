@@ -27,10 +27,12 @@ const MainContainer = () => {
 
           <div className="flex gap-4">
             <button className="bg-white text-black px-8 py-3 rounded-md font-bold hover:bg-gray-300 transition">
-              ▶ Play
+              <i className="fas fa-play mr-2"></i>
+              Play
             </button>
 
             <button className="bg-gray-500/70 text-white px-8 py-3 rounded-md font-bold hover:bg-gray-500 transition">
+              <i className="fas fa-info-circle mr-2"></i>
               More Info
             </button>
           </div>

@@ -6,12 +6,13 @@ const VideoContainer = ({ movieId }: { movieId: number }) => {
   useMovieVideos(movieId);
   return (
     <>
-      <div className="video-container absolute inset-0">
+      <div className="video-container absolute w-screen inset-0 aspect-video">
         <iframe
           title="Movie Trailer"
+          className="w-screen h-screen object-cover aspect-video"
           width="100%"
           height="100%"
-          src={`https://www.youtube.com/embed/${trailerVideo?.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo?.key}`}
+          src={`https://www.youtube.com/embed/${trailerVideo?.key}?autoplay=1&mute=1`}
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen

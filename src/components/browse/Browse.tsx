@@ -1,7 +1,10 @@
-import { useNowPlayingMovies } from "@/hooks/useNowPlayingMovies";
+import { useNowPlayingMovies } from "@/hooks/movies/useNowPlayingMovies";
 import MainLayout from "../MainLayout";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
+import { usePopularMovies } from "@/hooks/movies/usePopularMovies";
+import { useUpcomingMovies } from "@/hooks/movies/useUpcomingMovies";
+import { useTopRatedMovies } from "@/hooks/movies/useTopRatedMovies";
 /**
  * Main Container
  *   - Video Background (Hero Section)
@@ -15,6 +18,9 @@ import SecondaryContainer from "./SecondaryContainer";
 
 const Browse = () => {
   useNowPlayingMovies();
+  usePopularMovies();
+  useTopRatedMovies();
+  useUpcomingMovies();
 
   return (
     <MainLayout>

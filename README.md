@@ -20,6 +20,8 @@ Netflix GPT is a movie recommendation application that integrates with the OpenA
 - Nullish Coalescing Operator (??) for handling default values
 - Firebase Hosting for development and production
 - Redux Toolkit for state management
+- TMDB API integration for fetching movie data
+- custom hooks for modular and reusable logic
 - GPT Integration (OpenAI API)
 
 1. Authentication with Firebase: Users can sign up and log in using their email and password. Firebase Authentication provides a secure and easy way to manage user authentication. Protected routes ensure that only authenticated users can access certain parts of the application.
@@ -48,6 +50,10 @@ Netflix GPT is a movie recommendation application that integrates with the OpenA
     - The details page includes a larger poster image, title, description, release date, and rating
     - A "Watch Trailer" button that opens a modal with the movie trailer - GPT Integration
     - A section for user reviews and ratings
+  - making search input (or can make pages multilingual)
+    - learned Record<Key, Type> utility type in TypeScript to create a type for the language dictionary
+    - created a languageConfig file to store the language dictionary and types for supported languages
+    - created app config state in Redux to manage the selected language across the application
   - GPT Integration
     - search bar for users to ask questions about movies, actors, or genres
     - movie recommendations based on user queries
@@ -68,6 +74,7 @@ Netflix GPT is a movie recommendation application that integrates with the OpenA
 - set up Redux Toolkit for state management ✔️
 - route protection with React Router to restrict access to certain routes based on authentication status ✔️
 - integrate with TMDB API to fetch movie data ✔️
+- custom hooks for modular and reusable logic ✔️
 
 ## Routes & API Endpoints:
 

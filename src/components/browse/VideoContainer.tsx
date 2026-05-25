@@ -12,7 +12,7 @@ const VideoContainer = ({ movieId }: { movieId: number }) => {
           className="w-screen h-screen object-cover aspect-video"
           width="100%"
           height="100%"
-          src={`https://www.youtube.com/embed/${trailerVideo?.key}?autoplay=1&mute=1`}
+          src={`https://www.youtube.com/embed/${trailerVideo?.key}?autoplay=1&mute=1&controls=0&loop=1&playlist=${trailerVideo?.key}`}
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen

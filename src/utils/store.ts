@@ -1,11 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../reducer-actions/userSlice";
 import moviesReducer from "../reducer-actions/movieSlice";
+import gptReducer from "../reducer-actions/gptSlice";
+import appConfigReducer from "../reducer-actions/appConfigSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     movies: moviesReducer,
+    gpt: gptReducer,
+    appConfig: appConfigReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

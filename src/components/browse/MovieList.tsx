@@ -131,6 +131,10 @@ const MovieList = ({ movies, title }: MovieListProps) => {
             {/* HOVER OVERLAY */}
             <div
               className="
+              flex
+              flex-col
+              justify-end
+              items-start
                 absolute
                 inset-0
                 bg-black/20
@@ -139,12 +143,26 @@ const MovieList = ({ movies, title }: MovieListProps) => {
                 transition
                 duration-300
                 rounded-lg
-                flex
-                items-end
                 p-3
+                bg-gradient-to-t from-black/80 to-transparent
               "
             >
-              <p className="text-sm font-semibold text-white">{movie.title}</p>
+              <h3 className="font-bold text-lg">{movie.title}</h3>
+
+              <button
+                className="
+                        mt-2
+                        bg-white
+                        text-black
+                        px-4
+                        py-1
+                        rounded
+                        font-semibold
+                        text-sm
+                      "
+              >
+                ▶ Play
+              </button>
             </div>
           </div>
         ))}

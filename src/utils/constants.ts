@@ -6,3 +6,26 @@ export const USER_PHOTO_URL =
 // base URL for fetching movie images from TMDB
 export const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 export const TMDB_MOVIE_VIDEOS_BASE_URL = "https://api.themoviedb.org/3/movie"; // base URL for fetching movie videos from TMDB
+
+export const SUPPORTED_LANGUAGES = [
+  {
+    identifier: "en",
+    label: "English",
+    name: "English",
+  },
+  {
+    identifier: "hi",
+    label: "Hindi",
+    name: "Hindi",
+  },
+  {
+    identifier: "es",
+    label: "Spanish",
+    name: "Spanish",
+  },
+  {
+    identifier: "ne",
+    label: "Nepali",
+    name: "Nepali",
+  },
+];

@@ -5,6 +5,8 @@ import SecondaryContainer from "./SecondaryContainer";
 import { usePopularMovies } from "@/hooks/movies/usePopularMovies";
 import { useUpcomingMovies } from "@/hooks/movies/useUpcomingMovies";
 import { useTopRatedMovies } from "@/hooks/movies/useTopRatedMovies";
+import GPTSearch from "./GPTSearch";
+import { useAppSelector } from "@/utils/hooks";
 /**
  * Main Container
  *   - Video Background (Hero Section)
@@ -17,6 +19,9 @@ import { useTopRatedMovies } from "@/hooks/movies/useTopRatedMovies";
  */
 
 const Browse = () => {
+  const showGPTSearch = useAppSelector(
+    (state) => state.gpt.isGptSearchViewOpen,
+  );
   useNowPlayingMovies();
   usePopularMovies();
   useTopRatedMovies();
@@ -25,8 +30,16 @@ const Browse = () => {
   return (
     <MainLayout>
       <div className="browse-page bg-black min-h-screen text-white">
-        <MainContainer />
-        <SecondaryContainer />
+        {showGPTSearch ? (
+          <>
+            <GPTSearch />
+          </>
+        ) : (
+          <>
+            <MainContainer />
+            <SecondaryContainer />
+          </>
+        )}
       </div>
     </MainLayout>
   );

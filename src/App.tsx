@@ -3,7 +3,7 @@ import { appRouter } from "./router/appRouter";
 
 function App() {
   return (
-    <div className="netflix-body">
+    <div className="netflix-app">
       <RouterProvider router={appRouter} />
     </div>
   );

@@ -1,9 +1,10 @@
 import { useRef } from "react";
 import type { Movie } from "@/reducer-actions/movieSlice";
+import MovieCard from "./MovieCard";
 
 interface MovieListProps {
   movies: Movie[];
-  title: string;
+  title?: string;
 }
 
 const MovieList = ({ movies, title }: MovieListProps) => {
@@ -93,6 +94,8 @@ const MovieList = ({ movies, title }: MovieListProps) => {
         ref={sliderRef}
         className="
           flex
+          w-full
+          
           overflow-x-scroll
           scroll-smooth
           scrollbar-hide
@@ -104,67 +107,7 @@ const MovieList = ({ movies, title }: MovieListProps) => {
         "
       >
         {movies.map((movie) => (
-          <div
-            key={movie.id}
-            className="
-              min-w-[180px]
-              md:min-w-[240px]
-              relative
-              transition-all
-              duration-300
-              hover:scale-110
-              hover:z-30
-              cursor-pointer
-            "
-          >
-            {/* IMAGE */}
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-              className="
-                rounded-lg
-                object-cover
-                shadow-lg
-              "
-            />
-
-            {/* HOVER OVERLAY */}
-            <div
-              className="
-              flex
-              flex-col
-              justify-end
-              items-start
-                absolute
-                inset-0
-                bg-black/20
-                opacity-0
-                hover:opacity-100
-                transition
-                duration-300
-                rounded-lg
-                p-3
-                bg-gradient-to-t from-black/80 to-transparent
-              "
-            >
-              <h3 className="font-bold text-lg">{movie.title}</h3>
-
-              <button
-                className="
-                        mt-2
-                        bg-white
-                        text-black
-                        px-4
-                        py-1
-                        rounded
-                        font-semibold
-                        text-sm
-                      "
-              >
-                ▶ Play
-              </button>
-            </div>
-          </div>
+          <MovieCard key={movie.id} movie={movie} />
         ))}
       </div>
     </div>

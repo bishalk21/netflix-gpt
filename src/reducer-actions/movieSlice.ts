@@ -8,6 +8,7 @@ export interface Movie {
   poster_path: string;
   backdrop_path: string;
   vote_average: number;
+  poster?: string;
 }
 export interface MovieVideo {
   id: string;

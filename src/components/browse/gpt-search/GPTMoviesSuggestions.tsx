@@ -1,79 +1,36 @@
-import { mockMovies } from "@/utils/mockData";
+import { useAppSelector } from "@/utils/hooks";
+import MovieCard from "../MovieCard";
 
 const GPTMoviesSuggestions = () => {
+  const moviesSuggestions = useAppSelector((state) => state.gpt.movieDetails);
+
   return (
-    <div className="mt-16">
-      <h2 className="text-3xl font-bold mb-8">Recommended Movies</h2>
-
-      <div
-        className="
-              grid
-              grid-cols-2
-              sm:grid-cols-3
-              md:grid-cols-4
-              lg:grid-cols-5
-              gap-6
-            "
-      >
-        {mockMovies.map((movie) => (
+    <div className="mt-16 relative group">
+      {!moviesSuggestions || moviesSuggestions.length === 0 ? (
+        <div className="flex items-center justify-center h-64">
+          <p className="text-lg text-gray-300">
+            <i className="fas fa-film mr-2"></i> No movie suggestions available.
+            Try asking GPT for some recommendations!
+          </p>
+        </div>
+      ) : (
+        <>
+          <h2 className="text-3xl font-bold mb-8 text-center">
+            Recommended Movies
+          </h2>
           <div
-            key={movie.id}
-            className="
-                  group
-                  relative
-                  cursor-pointer
-                  transition-all
-                  duration-300
-                  hover:scale-105
-                "
+            className="flex flex-wrap justify-center 
+          gap-4
+          px-4
+          md:px-12
+          pb-4"
           >
-            <img
-              src={movie.poster}
-              alt={movie.title}
-              className="
-                    rounded-xl
-                    shadow-2xl
-                    w-full
-                  "
-            />
-
-            {/* HOVER OVERLAY */}
-            <div
-              className="
-                    absolute
-                    inset-0
-                    bg-black/60
-                    opacity-0
-                    group-hover:opacity-100
-                    transition
-                    rounded-xl
-                    flex
-                    items-end
-                    p-4
-                  "
-            >
-              <div>
-                <h3 className="font-bold text-lg">{movie.title}</h3>
-
-                <button
-                  className="
-                        mt-2
-                        bg-white
-                        text-black
-                        px-4
-                        py-1
-                        rounded
-                        font-semibold
-                        text-sm
-                      "
-                >
-                  ▶ Play
-                </button>
-              </div>
-            </div>
+            {moviesSuggestions?.map((movie) => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };

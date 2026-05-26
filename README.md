@@ -75,6 +75,7 @@ Netflix GPT is a movie recommendation application that integrates with the OpenA
 - route protection with React Router to restrict access to certain routes based on authentication status ✔️
 - integrate with TMDB API to fetch movie data ✔️
 - custom hooks for modular and reusable logic ✔️
+- language support with a language dictionary and app config state in Redux ✔️
 
 ## Routes & API Endpoints:
 
@@ -491,6 +492,79 @@ Redux Toolkit is a set of tools and utilities that simplify the process of writi
   - promotes DRY (Don't Repeat Yourself) principles by allowing you to reuse logic across multiple components without duplicating code, which can lead to cleaner and more maintainable codebases.
   - can be easily tested in isolation, as they are just JavaScript functions that can be imported and tested without needing to render a component.
   - better separation of concerns by keeping the logic and state management separate from the UI rendering, making it easier to reason about and maintain the codebase.
+
+### OpenAI API Integration
+
+- [AI FREE MODELS](https://openrouter.ai/collections/free-models)
+- The OpenAI API allows developers to integrate powerful language models, such as GPT, into their applications. This can enable features like natural language understanding, text generation, and conversational AI. By integrating the OpenAI API, you can create applications that can understand and respond to user queries in a more human-like manner, providing a more engaging and interactive user experience.
+- To integrate the OpenAI API, you need to sign up for an account on the OpenAI website and obtain an API key. Once you have the API key, you can make HTTP requests to the OpenAI API endpoints to send user queries and receive responses from the language model. This can be used to provide intelligent movie recommendations based on user queries, answer questions about movies, actors, or genres, and create a chat interface for users to interact with the GPT model.
+  - go to https://platform.openai.com/signup to create an account and obtain an API key.
+  - go to API keys in the OpenAI dashboard to create a new API key and copy it for use in your application.
+  - install the OpenAI SDK in your project to make it easier to interact with the OpenAI API.
+
+    ```
+    npm install openai
+    ```
+
+  - create a service file (e.g., `openAIService.ts`) to handle API requests to the OpenAI API. This file will include functions for sending user queries and receiving responses from the GPT model.
+
+    ```js
+    import { Configuration, OpenAIApi } from "openai";
+
+    const configuration = new Configuration({
+      apiKey: process.env.REACT_APP_OPENAI_API_KEY, // Store the API key in an environment variable for security
+    });
+
+    const openai = new OpenAIApi(configuration);
+
+    export const getGPTResponse = async (query: string) => {
+      try {
+        const response = await openai.createChatCompletion({
+          model: "gpt-3.5-turbo", // Specify the GPT model to use
+          messages: [{ role: "user", content: query }], // Send the user query as a message to the GPT model
+        });
+        return response.data.choices[0].message.content; // Return the GPT response content
+      } catch (error) {
+        console.error("Error fetching GPT response:", error);
+        throw error; // Rethrow the error to be handled by the caller
+      }
+    };
+    ```
+
+    [Back to top](#Table-of-Contents)
+
+### OpenAI Error: Browser-like Environment
+
+- OpenAI error: It looks like you are running in a browser-like environment:
+  - This error occurs because the OpenAI API requires a server environment to make API requests securely. When you try to make API requests from a client-side application (e.g., a React app running in the browser), it can expose your API key and lead to security vulnerabilities. To resolve this issue, you should set up a backend server (e.g., using Node.js) to handle the API requests to the OpenAI API. The backend server can securely store your API key and make requests to the OpenAI API on behalf of your client-side application, keeping your API key hidden from the client and ensuring secure communication with the OpenAI API.
+  - OpenAI API requests should be made from a server environment to keep your API key secure. If you are trying to make API requests from a client-side application, consider setting up a backend server to handle the API requests and keep your API key hidden from the client.
+    - create a backend server using Node.js and Express to handle API requests to the OpenAI API.
+    - securely store your OpenAI API key in the backend server (e.g., using environment variables) and make API requests to the OpenAI API from the backend server instead of the client-side application.
+    - set up API routes in the backend server to receive requests from the client-side application and forward them to the OpenAI API, returning the responses back to the client-side application.
+
+      ```js
+      import express from "express";
+      import { getGPTResponse } from "./openAIService"; // Import the function to get GPT response from the OpenAI API
+
+      const app = express();
+      app.use(express.json());
+
+      app.post("/api/gpt", async (req, res) => {
+        const { query } = req.body; // Get the user query from the request body
+        try {
+          const gptResponse = await getGPTResponse(query); // Get the GPT response from the OpenAI API
+          res.json({ response: gptResponse }); // Send the GPT response back to the client
+        } catch (error) {
+          console.error("Error fetching GPT response:", error);
+          res.status(500).json({ error: "Failed to fetch GPT response" }); // Send an error response if there was an issue fetching the GPT response
+        }
+      });
+
+      const PORT = process.env.PORT || 5000;
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+      ```
 
 ### Best Practices
 

@@ -17,21 +17,15 @@ const MainLayout = ({ children }: MainLayoutProps) => {
       {/* This is where the main content of the app will be rendered based on the route */}
       <Header />
       {children}
-      <div className="fixed bottom-8 right-8 z-20">
+      <div className="fixed bottom-8 right-8 z-50">
         <button
-          className="bg-amber-100 hover:bg-amber-200 text-black font-bold py-2 px-4 rounded-md transition-colors duration-300 shadow-lg flex items-center space-x-2"
+          className="bg-amber-100 hover:bg-amber-200 text-black font-bold py-2 px-4 rounded-md transition-colors duration-300 shadow-lg flex items-center text-center"
           onClick={handleGPTSearchClick}
         >
-          <i className="fas fa-robot mr-2"></i>
-          Ask GPT
+          <i className="fas fa-robot"></i>
+          <span className="hidden ml-2 sm:inline-block">Ask GPT</span>
         </button>
       </div>
-      <div
-        className="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-30 z-0"
-        style={{
-          backgroundImage: `url("/netflix-bg.jpg")`,
-        }}
-      />
     </div>
   );
 };
